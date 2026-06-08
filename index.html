@@ -6,11 +6,11 @@
     <title>Mon E-Shop - Mode & Tech</title>
     <style>
         :root {
-            --primary: #A61C1C;
-            --secondary: #14532D;
-            --accent: #D9A05B;
-            --bg: #FFFDF9;
-            --dark: #2A2A2A;
+            --primary: #2563EB; /* Bleu moderne pour la tech/mode */
+            --secondary: #10B981;
+            --accent: #F59E0B;
+            --bg: #F9FAFB;
+            --dark: #1F2937;
             --font: 'Segoe UI', Arial, sans-serif;
         }
 
@@ -26,72 +26,72 @@
             transition: background 0.5s ease;
         }
         
-        .top-bar { background: #111; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; flex-wrap: wrap; gap: 10px; }
-        .lang-selector select { background: #333; color: white; border: 1px solid #555; padding: 5px; border-radius: 4px; cursor: pointer; }
+        .top-bar { background: #111827; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; flex-wrap: wrap; gap: 10px; }
+        .lang-selector select { background: #374151; color: white; border: 1px solid #4B5563; padding: 5px; border-radius: 4px; cursor: pointer; }
 
-        header { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80') center/cover; color: white; text-align: center; padding: 60px 20px; position: relative; }
-        header h1 { font-size: 2.5rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        header { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80') center/cover; color: white; text-align: center; padding: 60px 20px; position: relative; }
+        header h1 { font-size: 2.5rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); text-transform: uppercase; }
         
         .secret-dot { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; background: rgba(255,255,255,0.1); border-radius: 50%; cursor: pointer; }
         
         .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
         
-        .category-title { font-size: 1.5rem; color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 5px; margin: 30px 0 15px 0; font-weight: bold; text-transform: uppercase; background: rgba(255,255,255,0.8); display: inline-block; padding-right: 15px; border-radius: 0 6px 6px 0; }
+        .category-title { font-size: 1.4rem; color: var(--primary); border-bottom: 3px solid var(--primary); padding-bottom: 5px; margin: 30px 0 15px 0; font-weight: bold; text-transform: uppercase; background: rgba(255,255,255,0.8); display: inline-block; padding-right: 15px; border-radius: 0 6px 6px 0; }
         
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
         
-        .card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; display: flex; flex-direction: column; border: 1px solid #ddd; transition: transform 0.3s, box-shadow 0.3s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+        .card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; display: flex; flex-direction: column; border: 1px solid #E5E7EB; transition: transform 0.3s, box-shadow 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         
-        .card .img-container { width: 100%; height: 200px; overflow: hidden; cursor: pointer; background: #f3f4f6; }
+        .card .img-container { width: 100%; height: 220px; overflow: hidden; cursor: pointer; background: #f3f4f6; }
         .card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .card .img-container:hover img { transform: scale(1.05); }
         
         .card-body { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
-        .card-body h3 { font-size: 1.2rem; margin-bottom: 5px; cursor: pointer; }
+        .card-body h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; cursor: pointer; }
         .card-body h3:hover { color: var(--primary); }
-        .card-price { font-size: 1.25rem; color: var(--primary); font-weight: bold; margin: 10px 0; }
+        .card-price { font-size: 1.3rem; color: var(--primary); font-weight: bold; margin: 10px 0; }
         
         .variant-selector { margin: 5px 0; }
-        .variant-selector label { font-size: 0.75rem; color: #666; font-weight: bold; display: block; margin-bottom: 2px; }
-        .variant-selector select { padding: 6px; margin: 2px 0 8px 0; font-size: 0.85rem; background: #F3F4F6; width: 100%; border-radius: 6px; border: 1px solid #ccc; }
+        .variant-selector label { font-size: 0.75rem; color: #6B7280; font-weight: bold; display: block; margin-bottom: 2px; }
+        .variant-selector select { padding: 6px; margin: 2px 0 8px 0; font-size: 0.85rem; background: #F3F4F6; width: 100%; border-radius: 6px; border: 1px solid #D1D5DB; }
 
-        .stock-tag { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; color: white; z-index: 10; }
+        .stock-tag { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: white; z-index: 10; }
         .in-stock { background: var(--secondary); }
-        .out-of-stock { background: #777; }
+        .out-of-stock { background: #EF4444; }
 
         .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 15px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 99; display: flex; align-items: center; gap: 10px; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; overflow-y: auto; padding: 10px; backdrop-filter: blur(4px); }
-        .modal-content { background: white; max-width: 500px; margin: 50px auto; padding: 20px; border-radius: 8px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .modal-content { background: white; max-width: 520px; margin: 40px auto; padding: 25px; border-radius: 12px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #aaa; z-index: 10; }
 
-        /* Fiche produit (Popup) */
-        .product-popup-img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background: #f3f4f6; }
-        .product-popup-desc { color: #555; font-size: 0.95rem; margin: 15px 0; background: #F9FAFB; padding: 12px; border-radius: 6px; border-left: 3px solid #ccc; }
+        /* Pop-up Fiche produit */
+        .product-popup-img { width: 100%; max-height: 320px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background: #f3f4f6; }
+        .product-popup-desc { color: #4B5563; font-size: 0.95rem; margin: 15px 0; background: #F9FAFB; padding: 12px; border-radius: 6px; border-left: 3px solid #D1D5DB; }
 
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
-        .btn { background: var(--primary); color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; text-align: center; display: block; text-decoration: none; }
+        .btn { background: var(--primary); color: white; border: none; padding: 11px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; text-align: center; display: block; text-decoration: none; }
         .btn:hover { filter: brightness(0.9); }
-        .btn-danger { background: #A61C1C; padding: 5px 10px; font-size: 0.8rem; width: auto; }
+        .btn-danger { background: #EF4444; padding: 5px 10px; font-size: 0.8rem; width: auto; }
 
-        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #D1D5DB; border-radius: 6px; }
 
-        .admin-tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; overflow-x: auto; }
-        .tab-btn { background: #eee; border: none; padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; font-weight: bold; white-space: nowrap; }
+        .admin-tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #E5E7EB; padding-bottom: 10px; overflow-x: auto; }
+        .tab-btn { background: #F3F4F6; border: none; padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; font-weight: bold; white-space: nowrap; }
         .tab-btn.active { background: var(--dark); color: white; }
         .admin-tab-content { display: none; }
         .admin-tab-content.active { display: block; }
         
         .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.85rem; }
-        .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        .admin-table th { background: #f5f5f5; }
+        .admin-table th, .admin-table td { border: 1px solid #E5E7EB; padding: 8px; text-align: left; }
+        .admin-table th { background: #F9FAFB; }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
-        <div id="banner-info">Bienvenue chez Pizza Love !</div>
+        <div id="banner-info">🔥 Nouvelle collection disponible !</div>
         <div class="lang-selector">
             <select id="langSelect" onchange="changeLanguage(this.value)">
                 <option value="fr">Français 🇫🇷</option>
@@ -101,7 +101,7 @@
     </div>
 
     <header id="site-header">
-        <h1 id="site-title">Pizza Love</h1>
+        <h1 id="site-title">Mon E-Shop</h1>
         <div class="secret-dot" onclick="secretAdminClick()"></div>
     </header>
 
@@ -120,7 +120,7 @@
             <h2 id="popup-title" style="font-weight:bold; margin-bottom:5px;"></h2>
             <div id="popup-price" style="font-size:1.3rem; color:var(--primary); font-weight:bold; margin-bottom:10px;"></div>
             
-            <h4 style="font-size:0.8rem; text-transform:uppercase; color:#666; margin-top:10px;">Description / Détails</h4>
+            <h4 style="font-size:0.8rem; text-transform:uppercase; color:#6B7280; margin-top:10px;">Description du produit</h4>
             <p id="popup-desc" class="product-popup-desc"></p>
             
             <div id="popup-selectors-zone" style="margin: 15px 0;"></div>
@@ -136,7 +136,7 @@
             <div id="cart-items-list" style="margin: 20px 0; max-height: 200px; overflow-y: auto;"></div>
             <h3 style="margin-bottom: 20px;">Total: <span id="cart-total">0.00</span> €</h3>
             <button id="btn-checkout-social" class="btn" onclick="checkoutOrder()">
-                📸 Commander via Instagram
+                📸 Passer la commande
             </button>
         </div>
     </div>
@@ -144,7 +144,7 @@
     <div class="modal" id="adminModal">
         <div class="modal-content" style="max-width: 90%;">
             <span class="close-btn" onclick="closeModal('adminModal')">×</span>
-            <h3>⚙️ Menu Gérant Store</h3>
+            <h3>⚙️ Console Administrateur Shop</h3>
             
             <div class="admin-tabs">
                 <button class="tab-btn active" onclick="switchTab('tab-items')">Articles & Stocks</button>
@@ -162,17 +162,18 @@
             </div>
 
             <div id="tab-add" class="admin-tab-content">
-                <h4>Ajouter un article neuf</h4>
-                <input type="text" id="new-type" placeholder="Catégorie (Ex: Tech, Sneakers, Pizzas)">
+                <h4>Ajouter un nouvel article</h4>
+                <input type="text" id="new-type" placeholder="Catégorie (Ex: Sneakers, Vestes, Tech)">
                 <input type="text" id="new-name" placeholder="Nom du produit">
                 
-                <div style="background: #eef6ff; padding: 8px; border-radius: 6px; font-size: 0.75rem; color:#1e40af; margin: 4px 0;">
-                    <strong>💡 Astuce Variantes (Couleurs / Tailles) :</strong><br>
-                    Exemple : <code>Le texte de description ici | Couleur:Rouge=lien_photo_1,Bleu=lien_photo_2 | Taille:S,M,XL</code>
+                <div style="background: #eff6ff; padding: 10px; border-radius: 6px; font-size: 0.75rem; color:#1e40af; margin: 5px 0; border: 1px solid #bfdbfe;">
+                    <strong>💡 Astuce multi-images & options (Couleurs / Tailles) :</strong><br>
+                    Écris ta description puis sépare tes choix avec la barre <code>|</code>.<br>
+                    Exemple : <code>Survêtement lourd de saison | Couleur:Noir=lien_photo_noire,Bleu=lien_photo_bleue | Taille:S,M,XL</code>
                 </div>
                 <input type="text" id="new-desc" placeholder="Description simple ou avec options |">
                 
-                <input type="number" step="0.01" id="new-price" placeholder="Prix (Ex: 12.50)">
+                <input type="number" step="0.01" id="new-price" placeholder="Prix (Ex: 45.00)">
                 <input type="text" id="new-img" placeholder="Lien URL de la photo principale">
                 <button class="btn" style="margin-top:10px;" onclick="addNewProduct()">Publier l'article</button>
             </div>
@@ -181,7 +182,7 @@
                 <h4 style="color:var(--primary); border-bottom:1px solid #ddd; margin-bottom:5px;">Design & Textes</h4>
                 <h4>Nom de la boutique</h4><input type="text" id="edit-title">
                 <h4>Bandeau d'annonce (Haut)</h4><input type="text" id="edit-info">
-                <h4>Image Header (Couverture)</h4><input type="text" id="edit-header-img">
+                <h4>Image de couverture (Header)</h4><input type="text" id="edit-header-img">
                 
                 <h4 style="margin-top:10px;">Arrière-plan Global du Site (Fond d'écran)</h4>
                 <select id="edit-bg-type" onchange="toggleBgInputs()">
@@ -189,10 +190,10 @@
                     <option value="image">Une Image / Photo de fond complète</option>
                 </select>
                 <div id="bg-color-zone"><input type="color" id="edit-bg-color" style="height:40px; padding:0;"></div>
-                <div id="bg-image-zone" style="display:none;"><input type="text" id="edit-bg-image-url" placeholder="Colle le lien URL de ta photo de fond d'écran"></div>
+                <div id="bg-image-zone" style="display:none;"><input type="text" id="edit-bg-image-url" placeholder="Colle l'adresse URL de ton image de fond d'écran"></div>
 
-                <h4 style="color:var(--primary); border-bottom:1px solid #ddd; margin:15px 0 5px 0;">Réseau de Commande & Bouton</h4>
-                <h4>Application pour recevoir les commandes</h4>
+                <h4 style="color:var(--primary); border-bottom:1px solid #ddd; margin:15px 0 5px 0;">Bouton de Commande Réseaux Sociaux</h4>
+                <h4>Application pour recevoir les paniers</h4>
                 <select id="edit-social-platform" onchange="updateSocialLabelPlaceholder()">
                     <option value="instagram">Instagram 📸</option>
                     <option value="whatsapp">WhatsApp 💬</option>
@@ -202,28 +203,28 @@
                 <h4>Lien vers ton profil ou numéro de téléphone</h4>
                 <input type="text" id="edit-social-link" placeholder="Lien profil (ex: https://instagram.com/nom)">
 
-                <button class="btn" style="margin-top:15px;" onclick="saveGeneralSettings()">Sauvegarder les réglages</button>
+                <button class="btn" style="margin-top:15px;" onclick="saveGeneralSettings()">Sauvegarder tous les changements</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Récupération ou initialisation des données locales (LocalStorage)
-        let items = JSON.parse(localStorage.getItem('p_love_items')) || [
-            { id: 1, type: "Pizzas", name: "Margherita", desc: "Sauce tomate, mozzarella, basilic", price: 10.50, stock: true, img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=500&q=80" },
-            { id: 2, type: "Boissons", name: "Coca Cola", desc: "33cl bien frais", price: 2.50, stock: true, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=500&q=80" }
+        // Initialisation ou récupération du stock local
+        let items = JSON.parse(localStorage.getItem('eshop_items')) || [
+            { id: 1, type: "Sneakers", name: "Air Max Classic", desc: "Édition limitée neuve | Couleur:Blanc=https://images.unsplash.com/photo-1542291026-7eec264c27ff,Noir=https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a | Taille:41,42,43", price: 120.00, stock: true, img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff" },
+            { id: 2, type: "Vestes", name: "Coupe-vent Tech", desc: "Matière imperméable ultra confort", price: 75.00, stock: true, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5" }
         ];
         
-        let siteTitle = localStorage.getItem('p_love_title') || "Pizza Love";
-        let bannerText = localStorage.getItem('p_love_banner') || "Bienvenue chez Pizza Love !";
-        let headerImg = localStorage.getItem('p_love_header_img') || "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80";
+        let siteTitle = localStorage.getItem('eshop_title') || "Mon E-Shop";
+        let bannerText = localStorage.getItem('eshop_banner') || "🔥 Nouvelle collection disponible !";
+        let headerImg = localStorage.getItem('eshop_header_img') || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80";
         
-        let bgType = localStorage.getItem('p_love_bg_type') || "color";
-        let bgColor = localStorage.getItem('p_love_bg_color') || "#FFFDF9";
-        let bgImageUrl = localStorage.getItem('p_love_bg_image_url') || "";
+        let bgType = localStorage.getItem('eshop_bg_type') || "color";
+        let bgColor = localStorage.getItem('eshop_bg_color') || "#F9FAFB";
+        let bgImageUrl = localStorage.getItem('eshop_bg_image_url') || "";
         
-        let socialPlatform = localStorage.getItem('p_love_social_platform') || "instagram";
-        let socialLink = localStorage.getItem('p_love_social_link') || "https://www.instagram.com/yusef_rh93/";
+        let socialPlatform = localStorage.getItem('eshop_social_platform') || "instagram";
+        let socialLink = localStorage.getItem('eshop_social_link') || "https://www.instagram.com/yusef_rh93/";
 
         let cart = [];
         let adminClickCount = 0;
@@ -239,12 +240,11 @@
         }
 
         function renderSite() {
-            // Appliquer les styles et les textes
             document.getElementById('site-title').innerText = siteTitle;
             document.getElementById('banner-info').innerText = bannerText;
             document.getElementById('site-header').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${headerImg}')`;
             
-            // Gestion du fond d'écran
+            // Appliquer le fond d'écran choisi
             if(bgType === 'image' && bgImageUrl) {
                 document.body.style.backgroundImage = `url('${bgImageUrl}')`;
                 document.body.style.backgroundColor = 'transparent';
@@ -253,11 +253,12 @@
                 document.body.style.backgroundColor = bgColor;
             }
 
-            // Configuration du bouton social
+            // Mettre à jour le bouton panier pour l'appli choisie
             const checkoutBtn = document.getElementById('btn-checkout-social');
             if(socialPlatform === 'whatsapp') {
                 checkoutBtn.innerHTML = "💬 Commander via WhatsApp";
                 checkoutBtn.style.background = "#25D366";
+                checkoutBtn.style.color = "#fff";
             } else if(socialPlatform === 'snapchat') {
                 checkoutBtn.innerHTML = "👻 Commander via Snapchat";
                 checkoutBtn.style.background = "#FFFC00";
@@ -275,7 +276,7 @@
             renderShopUI();
         }
 
-        // Analyse la description pour extraire les variantes intelligentes
+        // Système d'analyse de description pour les images secondaires et options
         function parseVariants(descString) {
             if (!descString || !descString.includes(':')) return null;
             const result = { cleanDesc: "", options: {} };
@@ -336,7 +337,7 @@
 
                     catHtml += `
                         <div class="card">
-                            <span class="stock-tag ${item.stock ? 'in-stock' : 'out-of-stock'}">${item.stock ? 'DISPO' : 'ÉPUISÉ'}</span>
+                            <span class="stock-tag ${item.stock ? 'in-stock' : 'out-of-stock'}">${item.stock ? 'NEUF' : 'VENDU'}</span>
                             <div class="img-container" onclick="openProductPopup(${item.id})">
                                 <img id="img-item-${item.id}" src="${item.img}" alt="${item.name}">
                             </div>
@@ -344,7 +345,7 @@
                                 <h3 onclick="openProductPopup(${item.id})">${item.name}</h3>
                                 <p style="color:gray; font-size:0.85rem; margin: 5px 0; display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${displayDesc}</p>
                                 <div class="card-price" style="margin-top:auto;">${parseFloat(item.price).toFixed(2)} €</div>
-                                <button class="btn" onclick="openProductPopup(${item.id})" style="padding:6px; font-size:0.85rem;">
+                                <button class="btn" onclick="openProductPopup(${item.id})" style="padding:7px; font-size:0.85rem;">
                                     ${item.stock ? 'Voir l\'article' : 'Indisponible'}
                                 </button>
                             </div>
@@ -355,7 +356,7 @@
             }
         }
 
-        // OUVERTURE DE LA FICHE PRODUIT POPUP
+        // ACTION CLIC : OUVERTURE POPUP FICHE PRODUIT DÉTAILLÉE
         function openProductPopup(id) {
             const item = items.find(i => i.id === id);
             if(!item) return;
@@ -393,7 +394,7 @@
                 addBtn.style.background = "var(--primary)";
             } else {
                 addBtn.disabled = true;
-                addBtn.innerText = "Rupture de stock";
+                addBtn.innerText = "Victime de son succès (Vendu)";
                 addBtn.style.background = "gray";
             }
 
@@ -443,18 +444,18 @@
 
         function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
 
-        // ENVOI DU MESSAGE DE COMMANDE
+        // REDIRECTION AUTOMATIQUE VERS LE RÉSEAU CONFIGURÉ
         function checkoutOrder() {
             if(cart.length === 0) { alert("Votre panier est vide !"); return; }
-            let message = "Bonjour ! Je souhaite passer commande :\n\n";
+            let message = "Bonjour ! Je souhaite commander ces articles :\n\n";
             cart.forEach(item => { 
                 const optText = item.chosenDetails ? ` [${item.chosenDetails}]` : '';
                 message += `- 1x ${item.name}${optText} (${parseFloat(item.price).toFixed(2)}€)\n`; 
             });
-            message += `\n💰 Total : ${document.getElementById('cart-total').innerText} €`;
+            message += `\n💰 Montant Total : ${document.getElementById('cart-total').innerText} €`;
             
             navigator.clipboard.writeText(message).then(() => {
-                alert("🛒 Commande copiée ! L'application va s'ouvrir pour coller le message.");
+                alert("🛒 Commande copiée ! L'application va s'ouvrir pour coller ton message.");
                 let targetUrl = socialLink;
                 
                 if(socialPlatform === 'whatsapp') {
@@ -465,7 +466,7 @@
             });
         }
 
-        // GESTION CLIC ADMIM SECRET
+        // ACCÈS ADMIN PAR CLIC SECRET
         function secretAdminClick() {
             adminClickCount++;
             if(adminClickCount >= 3) {
@@ -503,7 +504,7 @@
             const linkInput = document.getElementById('edit-social-link');
             if(platform === 'whatsapp') { linkInput.placeholder = "Exemple : +33612345678"; } 
             else if(platform === 'snapchat') { linkInput.placeholder = "Ex: https://snapchat.com/add/ton_nom"; } 
-            else { linkInput.placeholder = "Lien complet de ton profil (https://...)"; }
+            else { linkInput.placeholder = "Lien complet (https://...)"; }
         }
 
         function renderAdminTable() {
@@ -516,8 +517,8 @@
                         <td>${parseFloat(item.price).toFixed(2)}</td>
                         <td>
                             <select onchange="updateStock(${index}, this.value === 'true')" style="padding:2px; margin:0;">
-                                <option value="true" ${item.stock ? 'selected' : ''}>Dispo</option>
-                                <option value="false" ${!item.stock ? 'selected' : ''}>Épuisé</option>
+                                <option value="true" ${item.stock ? 'selected' : ''}>En stock</option>
+                                <option value="false" ${!item.stock ? 'selected' : ''}>Vendu</option>
                             </select>
                         </td>
                         <td><button class="btn btn-danger" onclick="deleteProduct(${index})">X</button></td>
@@ -527,14 +528,14 @@
 
         function updateStock(index, status) {
             items[index].stock = status;
-            localStorage.setItem('p_love_items', JSON.stringify(items));
+            localStorage.setItem('eshop_items', JSON.stringify(items));
             renderSite();
         }
 
         function deleteProduct(index) {
-            if(confirm("Supprimer ce produit ?")) { 
+            if(confirm("Supprimer cet article ?")) { 
                 items.splice(index, 1); 
-                localStorage.setItem('p_love_items', JSON.stringify(items)); 
+                localStorage.setItem('eshop_items', JSON.stringify(items)); 
                 renderSite(); renderAdminTable(); 
             }
         }
@@ -544,11 +545,11 @@
             const name = document.getElementById('new-name').value;
             const desc = document.getElementById('new-desc').value; 
             const price = parseFloat(document.getElementById('new-price').value);
-            let img = document.getElementById('new-img').value || "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=80";
+            let img = document.getElementById('new-img').value || "https://images.unsplash.com/photo-1542291026-7eec264c27ff";
             if(!name || !desc || !price) return;
             
             items.push({ id: Date.now(), type, name, desc, price, stock: true, img });
-            localStorage.setItem('p_love_items', JSON.stringify(items));
+            localStorage.setItem('eshop_items', JSON.stringify(items));
             renderSite(); renderAdminTable(); closeModal('adminModal');
         }
 
@@ -562,17 +563,17 @@
             socialPlatform = document.getElementById('edit-social-platform').value;
             socialLink = document.getElementById('edit-social-link').value;
 
-            localStorage.setItem('p_love_title', siteTitle); 
-            localStorage.setItem('p_love_banner', bannerText);
-            localStorage.setItem('p_love_header_img', headerImg);
-            localStorage.setItem('p_love_bg_type', bgType);
-            localStorage.setItem('p_love_bg_color', bgColor);
-            localStorage.setItem('p_love_bg_image_url', bgImageUrl);
-            localStorage.setItem('p_love_social_platform', socialPlatform);
-            localStorage.setItem('p_love_social_link', socialLink);
+            localStorage.setItem('eshop_title', siteTitle); 
+            localStorage.setItem('eshop_banner', bannerText);
+            localStorage.setItem('eshop_header_img', headerImg);
+            localStorage.setItem('eshop_bg_type', bgType);
+            localStorage.setItem('eshop_bg_color', bgColor);
+            localStorage.setItem('eshop_bg_image_url', bgImageUrl);
+            localStorage.setItem('eshop_social_platform', socialPlatform);
+            localStorage.setItem('eshop_social_link', socialLink);
 
             renderSite(); closeModal('adminModal');
-            alert("Réglages mis à jour avec succès !");
+            alert("Boutons, look et fond d'écran configurés !");
         }
 
         function switchTab(tabId) {
