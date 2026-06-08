@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon E-Shop - Produits Neufs</title>
+    <title>Mon E-Shop - Mode & Tech</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            --primary: #2563EB; /* Bleu e-commerce moderne */
-            --secondary: #10B981; /* Vert dispo / succès */
+            --primary: #2563EB; 
+            --secondary: #10B981; 
             --accent: #F59E0B;
             --bg: #F9FAFB; 
             --dark: #1F2937;
@@ -16,7 +16,16 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font); }
-        body { background-color: var(--bg); color: var(--dark); line-height: 1.6; padding-bottom: 90px; transition: background-color 0.5s ease; }
+        body { 
+            background-color: var(--bg); 
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--dark); 
+            line-height: 1.6; 
+            padding-bottom: 90px; 
+            transition: background 0.5s ease; 
+        }
         
         .top-bar { background: #1F2937; color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; flex-wrap: wrap; gap: 10px; }
         .lang-selector select { background: #374151; color: white; border: 1px solid #4B5563; padding: 5px; border-radius: 4px; }
@@ -24,30 +33,36 @@
         header { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80') center/cover; color: white; text-align: center; padding: 50px 15px; position: relative; }
         header h1 { font-size: 2.2rem; font-weight: 800; text-shadow: 2px 2px 4px rgba(0,0,0,0.4); text-transform: uppercase; letter-spacing: 1px; }
         
-        /* Zone secrète pour le gérant en haut à droite du header */
-        .secret-dot { position: absolute; top: 10px; right: 10px; width: 15px; height: 15px; background: rgba(255,255,255,0.2); border-radius: 50%; cursor: pointer; }
+        .secret-dot { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; background: rgba(255,255,255,0.1); border-radius: 50%; cursor: pointer; }
         
         .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
         
-        .category-sections { margin-bottom: 40px; }
-        .category-title { font-size: 1.4rem; color: var(--dark); font-weight: 700; margin: 30px 0 15px 0; padding-left: 10px; border-left: 4px solid var(--primary); text-transform: capitalize; }
+        .category-title { font-size: 1.4rem; color: var(--dark); font-weight: 700; margin: 30px 0 15px 0; padding-left: 10px; border-left: 4px solid var(--primary); text-transform: capitalize; background: rgba(255,255,255,0.8); display: inline-block; padding-right: 15px; border-radius: 0 8px 8px 0; }
         
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
         
         .animated-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .animated-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .animated-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
 
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.03); position: relative; display: flex; flex-direction: column; border: 1px solid #E5E7EB; }
-        .card img { width: 100%; height: 220px; object-fit: cover; background: #f3f4f6; }
+        .card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; display: flex; flex-direction: column; border: 1px solid #E5E7EB; }
+        .card .img-container { width: 100%; height: 220px; overflow: hidden; cursor: pointer; background: #f3f4f6; }
+        .card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .card .img-container:hover img { transform: scale(1.05); }
+        
         .card-body { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
-        .card-body h3 { font-size: 1.1rem; font-weight: 600; color: #111827; }
+        .card-body h3 { font-size: 1.1rem; font-weight: 600; color: #111827; cursor: pointer; }
+        .card-body h3:hover { color: var(--primary); }
         .card-price { font-size: 1.3rem; color: var(--primary); font-weight: 700; margin: 8px 0; }
         
+        .variant-selector { margin: 5px 0; }
+        .variant-selector label { font-size: 0.75rem; color: #6B7280; font-weight: 600; display: block; margin-bottom: 2px; }
+        .variant-selector select { padding: 6px; margin: 2px 0 8px 0; font-size: 0.85rem; background: #F3F4F6; width: 100%; border-radius: 6px; border: 1px solid #D1D5DB; }
+
         .stock-tag { position: absolute; top: 10px; right: 10px; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; color: white; z-index: 10; letter-spacing: 0.5px; }
         .in-stock { background: var(--secondary); }
         .out-of-stock { background: #EF4444; }
 
-        .footer-info-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 50px; background: white; padding: 25px; border-radius: 12px; border: 1px solid #E5E7EB; }
+        .footer-info-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 50px; background: rgba(255,255,255,0.95); padding: 25px; border-radius: 12px; border: 1px solid #E5E7EB; }
         @media(min-width: 768px) { .footer-info-grid { grid-template-columns: 1fr 1fr; } }
         
         .reviews-box { max-height: 250px; overflow-y: auto; margin-bottom: 15px; }
@@ -55,9 +70,13 @@
 
         .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 14px 24px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 10px 25px rgba(37,99,235,0.3); z-index: 99; display: flex; align-items: center; gap: 10px; font-size: 1rem; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; overflow-y: auto; padding: 10px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; overflow-y: auto; padding: 10px; backdrop-filter: blur(4px); }
         .modal-content { background: white; max-width: 550px; margin: 30px auto; padding: 25px; border-radius: 16px; position: relative; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-        .close-btn { position: absolute; top: 12px; right: 18px; font-size: 1.8rem; cursor: pointer; color: #9CA3AF; }
+        .close-btn { position: absolute; top: 12px; right: 18px; font-size: 1.8rem; cursor: pointer; color: #9CA3AF; z-index: 10; }
+
+        /* Style spécial pour la fiche produit */
+        .product-popup-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; background: #f3f4f6; }
+        .product-popup-desc { color: #4B5563; font-size: 0.95rem; margin: 15px 0; background: #F9FAFB; padding: 12px; border-radius: 8px; border-left: 3px solid #D1D5DB; }
 
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #F3F4F6; }
         .btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; text-align: center; display: block; text-decoration: none; font-size: 1rem; transition: background 0.2s; }
@@ -83,7 +102,7 @@
 <body>
 
     <div class="top-bar">
-        <div id="banner-info">Connexion e-shop en direct...</div>
+        <div id="banner-info">Connexion live...</div>
         <div class="lang-selector">
             🌐 <select id="langSelect" onchange="changeLanguage(this.value)">
                 <option value="fr">Français 🇫🇷</option>
@@ -134,13 +153,29 @@
         🛒 <span id="cart-text">Mon Panier</span> (<span id="cart-count">0</span>)
     </div>
 
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('productModal')">×</span>
+            <img id="popup-img" class="product-popup-img" src="" alt="">
+            <h2 id="popup-title" style="font-size:1.5rem; font-weight:700; margin-bottom:5px;"></h2>
+            <div id="popup-price" style="font-size:1.4rem; color:var(--primary); font-weight:700; margin-bottom:10px;"></div>
+            
+            <h4 style="font-size:0.85rem; text-transform:uppercase; color:#6B7280; margin-top:10px;">Description de l'article</h4>
+            <p id="popup-desc" class="product-popup-desc"></p>
+            
+            <div id="popup-selectors-zone" style="margin: 15px 0;"></div>
+            
+            <button id="popup-add-btn" class="btn" style="margin-top:15px; padding:14px;">Ajouter cet article au panier</button>
+        </div>
+    </div>
+
     <div class="modal" id="cartModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('cartModal')">×</span>
             <h3 id="title-your-cart">Votre Panier</h3>
             <div id="cart-items-list" style="margin: 20px 0; max-height: 250px; overflow-y: auto;"></div>
             <h3 style="margin-bottom: 20px;">Total: <span id="cart-total">0.00</span> €</h3>
-            <button class="btn" onclick="checkoutInstagram()" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);">
+            <button id="btn-checkout-social" class="btn" onclick="checkoutOrder()" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);">
                 📸 Commander via Instagram
             </button>
         </div>
@@ -155,7 +190,7 @@
                 <button class="tab-btn active" onclick="switchTab('tab-items')">Articles & Stocks</button>
                 <button class="tab-btn" onclick="switchTab('tab-add')">+ Mettre en Vente</button>
                 <button class="tab-btn" onclick="switchTab('tab-reviews')">Avis Acheteurs</button>
-                <button class="tab-btn" onclick="switchTab('tab-settings')">Look & Textes</button>
+                <button class="tab-btn" onclick="switchTab('tab-settings')">Look, Fond & Boutons</button>
             </div>
 
             <div id="tab-items" class="admin-tab-content active">
@@ -169,11 +204,19 @@
 
             <div id="tab-add" class="admin-tab-content">
                 <h4>Ajouter un nouvel article neuf</h4>
-                <input type="text" id="new-type" placeholder="Catégorie (Ex: Tech, Sneakers, Mode, Accessoires)">
+                <input type="text" id="new-type" placeholder="Catégorie (Ex: Tech, Sneakers, Mode)">
                 <input type="text" id="new-name" placeholder="Nom du produit">
-                <input type="text" id="new-desc" placeholder="Détails (Taille, Couleur, État)">
+                
+                <div style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px; border-radius: 8px; margin: 5px 0;">
+                    <strong style="font-size:0.85rem; color:#1e40af;">💡 Rappel Astuce Choix de Couleurs / Tailles :</strong>
+                    <p style="font-size:0.75rem; color:#1e3a8a; margin-top:2px;">
+                        Exemple : <code>Le texte de description ici | Couleur:Rouge=lien_photo_1,Bleu=lien_photo_2 | Taille:S,M,XL</code>
+                    </p>
+                </div>
+                <input type="text" id="new-desc" placeholder="Description de l'objet (Simple ou avec options | )">
+                
                 <input type="number" step="0.01" id="new-price" placeholder="Prix (Ex: 49.99)">
-                <input type="text" id="new-img" placeholder="Lien URL de la photo de l'objet">
+                <input type="text" id="new-img" placeholder="Lien URL de la photo principale">
                 <button class="btn" style="margin-top:10px;" onclick="addNewProduct()">Enregistrer et publier</button>
             </div>
 
@@ -187,32 +230,36 @@
             </div>
 
             <div id="tab-settings" class="admin-tab-content">
-                <h4>Nom commercial du shop</h4><input type="text" id="edit-title">
-                <h4>Bandeau de notification (Haut)</h4><input type="text" id="edit-info">
-                <h4>Lien Image Header (Couverture)</h4><input type="text" id="edit-header-img">
+                <h4 style="color:var(--primary); border-bottom:1px solid #ddd; margin-bottom:5px;">Design & Textes</h4>
+                <h4>Nom de la boutique</h4><input type="text" id="edit-title">
+                <h4>Bandeau d'annonce (Tout en haut)</h4><input type="text" id="edit-info">
+                <h4>Image de couverture (Header)</h4><input type="text" id="edit-header-img">
                 
-                <h4>Couleur de fond du site</h4>
-                <input type="color" id="edit-bg-color" style="height:40px; padding:0;">
-                
-                <h4>Police de caractères</h4>
-                <select id="edit-font">
-                    <option value="'Segoe UI', sans-serif">Moderne (Segoe UI)</option>
-                    <option value="'Georgia', serif">Luxe / Rétro (Georgia)</option>
+                <h4 style="margin-top:10px;">Arrière-plan Global du Site (Fond d'écran)</h4>
+                <select id="edit-bg-type" onchange="toggleBgInputs()">
+                    <option value="color">Une couleur simple</option>
+                    <option value="image">Une Image / Photo de fond complète</option>
                 </select>
+                <div id="bg-color-zone"><input type="color" id="edit-bg-color" style="height:40px; padding:0;"></div>
+                <div id="bg-image-zone" style="display:none;"><input type="text" id="edit-bg-image-url" placeholder="Colle le lien URL de ta photo de fond d'écran"></div>
 
-                <h4>Animations fluides</h4>
-                <select id="edit-animations">
-                    <option value="true">Activer les animations au survol</option>
-                    <option value="false">Désactiver</option>
+                <h4 style="color:var(--primary); border-bottom:1px solid #ddd; margin:15px 0 5px 0;">Réseau de Commande & Bouton</h4>
+                <h4>Application choisie pour recevoir les paniers</h4>
+                <select id="edit-social-platform" onchange="updateSocialLabelPlaceholder()">
+                    <option value="instagram">Instagram 📸</option>
+                    <option value="whatsapp">WhatsApp 💬</option>
+                    <option value="snapchat">Snapchat 👻</option>
+                    <option value="tiktok">TikTok 🎵</option>
                 </select>
+                <h4>Lien URL vers ton profil ou numéro</h4>
+                <input type="text" id="edit-social-link" placeholder="Lien profil (ex: https://instagram.com/nom)">
 
-                <button class="btn" style="margin-top:15px; background:var(--primary);" onclick="saveGeneralSettings()">Mettre à jour le design global</button>
+                <button class="btn" style="margin-top:15px; background:var(--primary);" onclick="saveGeneralSettings()">Sauvegarder tout le look</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Tes nouveaux identifiants Supabase actifs
         const SUBAPASE_URL = "https://cmfksgpzqxmeiolybtaz.supabase.co";
         const SUPABASE_KEY = "sb_publishable_inCQG7-gvY-5clyg1bJkAw_8-h_kLND";
         const _supabase = supabase.createClient(SUBAPASE_URL, SUPABASE_KEY);
@@ -281,22 +328,89 @@
             document.getElementById('site-title').innerText = settings.siteTitle || "Mon E-Shop";
             document.getElementById('banner-info').innerText = settings.bannerText || "⚡ Articles neufs en stock";
             
-            if(settings.bg_color) document.documentElement.style.setProperty('--bg', settings.bg_color);
-            if(settings.font_family) document.documentElement.style.setProperty('--font', settings.font_family);
+            // Gestion intelligente du fond d'écran (Couleur ou image)
+            if(settings.bg_type === 'image' && settings.bg_image_url) {
+                document.body.style.backgroundImage = `url('${settings.bg_image_url}')`;
+                document.body.style.backgroundColor = 'transparent';
+            } else {
+                document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundColor = settings.bg_color || "#F9FAFB";
+            }
+
             if(settings.header_img) {
                 document.getElementById('site-header').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${settings.header_img}')`;
             }
+
+            // Mise à jour visuelle du bouton de commande
+            const platform = settings.social_platform || 'instagram';
+            const checkoutBtn = document.getElementById('btn-checkout-social');
+            if(checkoutBtn) {
+                if(platform === 'whatsapp') {
+                    checkoutBtn.innerHTML = "💬 Commander via WhatsApp";
+                    checkoutBtn.style.background = "#25D366";
+                } else if(platform === 'snapchat') {
+                    checkoutBtn.innerHTML = "👻 Commander via Snapchat";
+                    checkoutBtn.style.background = "#FFFC00";
+                    checkoutBtn.style.color = "#000";
+                } else if(platform === 'tiktok') {
+                    checkoutBtn.innerHTML = "🎵 Commander via TikTok";
+                    checkoutBtn.style.background = "#000000";
+                } else {
+                    checkoutBtn.innerHTML = "📸 Commander via Instagram";
+                    checkoutBtn.style.background = "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)";
+                    checkoutBtn.style.color = "#fff";
+                }
+            }
+        }
+
+        function parseVariants(descString) {
+            if (!descString || !descString.includes(':')) return null;
+            const result = { cleanDesc: "", options: {} };
+            const parts = descString.split('|');
+            let variantParts = parts;
+            if (parts.length > 0 && !parts[0].includes(':')) {
+                result.cleanDesc = parts[0].trim();
+                variantParts = parts.slice(1);
+            }
+            variantParts.forEach(part => {
+                if (!part.includes(':')) {
+                    if(!result.cleanDesc) result.cleanDesc = part.trim();
+                    return;
+                }
+                const subParts = part.split(':');
+                const optionName = subParts[0].trim();
+                const optionValuesRaw = subParts[1].split(',');
+                result.options[optionName] = optionValuesRaw.map(v => {
+                    if (v.includes('=')) {
+                        const kv = v.split('=');
+                        return { label: kv[0].trim(), img: kv[1].trim() };
+                    }
+                    return { label: v.trim(), img: null };
+                });
+            });
+            return result;
+        }
+
+        function handleColorChange(selectElement, itemId, defaultImg, isPopup = false) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const imgUrl = selectedOption.getAttribute('data-img');
+            
+            // Change l'image sur la carte d'origine
+            const cardImg = document.getElementById(`img-item-${itemId}`);
+            if (cardImg && imgUrl && imgUrl !== 'null') cardImg.src = imgUrl;
+
+            // Change l'image sur le popup si ouvert
+            const popupImg = document.getElementById('popup-img');
+            if (isPopup && popupImg && imgUrl && imgUrl !== 'null') popupImg.src = imgUrl;
         }
 
         function renderShopUI() {
             const container = document.getElementById('shop-categories-container');
             container.innerHTML = '';
-
             if (items.length === 0) {
-                container.innerHTML = `<p style="text-align:center; color:gray; padding:20px;">Aucun article en vente pour le moment.</p>`;
+                container.innerHTML = `<p style="text-align:center; color:gray; padding:20px; background:white; border-radius:8px;">Aucun article en vente pour le moment.</p>`;
                 return;
             }
-
             const categories = {};
             items.forEach(item => {
                 const catName = item.type || 'Général';
@@ -304,56 +418,101 @@
                 categories[catName].push(item);
             });
 
-            const isAnimated = settings.enable_animations !== 'false';
-
             for (const [catName, prodList] of Object.entries(categories)) {
-                let catHtml = `
-                    <div class="category-block">
-                        <div class="category-title">${catName}</div>
-                        <div class="menu-grid">
-                `;
-
+                let catHtml = `<div class="category-block"><div class="category-title">${catName}</div><div class="menu-grid">`;
                 prodList.forEach(item => {
+                    const parsed = parseVariants(item.description);
+                    let displayDesc = item.description || '';
+                    if (parsed) displayDesc = parsed.cleanDesc;
+
                     catHtml += `
-                        <div class="card ${isAnimated ? 'animated-card' : ''}">
+                        <div class="card animated-card">
                             <span class="stock-tag ${item.stock ? 'in-stock' : 'out-of-stock'}">${item.stock ? 'NEUF' : 'VENDU'}</span>
-                            <img src="${item.img || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30'}" alt="${item.name}">
+                            <div class="img-container" onclick="openProductPopup(${item.id})">
+                                <img id="img-item-${item.id}" src="${item.img || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30'}" alt="${item.name}">
+                            </div>
                             <div class="card-body">
-                                <h3>${item.name}</h3>
-                                <p style="color:gray; font-size:0.85rem; margin: 5px 0; flex-grow:1;">${item.description || item.desc || ''}</p>
-                                <div class="card-price">${parseFloat(item.price).toFixed(2)} €</div>
-                                <button class="btn" onclick="addToCart(${item.id})" ${!item.stock ? 'disabled style="background:gray"' : ''}>
-                                    ${item.stock ? 'Ajouter au panier' : 'Indisponible'}
+                                <h3 onclick="openProductPopup(${item.id})">${item.name}</h3>
+                                <p style="color:gray; font-size:0.85rem; margin: 5px 0; display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${displayDesc}</p>
+                                <div class="card-price" style="margin-top:auto;">${parseFloat(item.price).toFixed(2)} €</div>
+                                <button class="btn" onclick="openProductPopup(${item.id})" style="padding:8px; font-size:0.9rem;">
+                                    ${item.stock ? 'Voir l\'article' : 'Indisponible'}
                                 </button>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 });
-
                 catHtml += `</div></div>`;
                 container.innerHTML += catHtml;
             }
         }
 
-        function renderReviewsUI() {
-            const container = document.getElementById('reviews-container');
-            container.innerHTML = '';
-            reviews.forEach(rev => {
-                container.innerHTML += `
-                    <div class="review-card">
-                        <strong>${rev.name}</strong> <span>${"⭐".repeat(rev.stars)}</span>
-                        <p style="font-size:0.85rem; margin-top:4px;">${rev.comment}</p>
-                    </div>
-                `;
-            });
+        // FONCTION CLÉ : OUVRIR LA FICHE PRODUIT DÉTAILLÉE (POPUP)
+        function openProductPopup(id) {
+            const item = items.find(i => i.id === id);
+            if(!item) return;
+
+            const popup = document.getElementById('productModal');
+            document.getElementById('popup-title').innerText = item.name;
+            document.getElementById('popup-price').innerText = `${parseFloat(item.price).toFixed(2)} €`;
+            
+            const parsed = parseVariants(item.description);
+            let displayDesc = item.description || 'Aucune description disponible.';
+            let selectorsHtml = '';
+
+            if (parsed) {
+                displayDesc = parsed.cleanDesc || "Article neuf avec options sélectionnables.";
+                for (const [optionName, values] of Object.entries(parsed.options)) {
+                    selectorsHtml += `<div class="variant-selector"><label>Choisir ${optionName} :</label>`;
+                    selectorsHtml += `<select id="popup-select-${optionName}-${item.id}" onchange="handleColorChange(this, ${item.id}, '${item.img || ''}', true)">`;
+                    values.forEach(v => {
+                        selectorsHtml += `<option value="${v.label}" data-img="${v.img}">${v.label}</option>`;
+                    });
+                    selectorsHtml += `</select></div>`;
+                }
+            }
+
+            document.getElementById('popup-desc').innerText = displayDesc;
+            document.getElementById('popup-selectors-zone').innerHTML = selectorsHtml;
+            
+            // Prendre la photo actuelle de la carte d'origine
+            const currentCardImg = document.getElementById(`img-item-${id}`);
+            document.getElementById('popup-img').src = currentCardImg ? currentCardImg.src : (item.img || '');
+
+            const addBtn = document.getElementById('popup-add-btn');
+            if(item.stock) {
+                addBtn.disabled = false;
+                addBtn.innerText = "Ajouter au panier";
+                addBtn.onclick = function() { addToCartFromPopup(item.id); };
+                addBtn.style.background = "var(--primary)";
+            } else {
+                addBtn.disabled = true;
+                addBtn.innerText = "Victime de son succès (Vendu)";
+                addBtn.style.background = "gray";
+            }
+
+            popup.style.display = 'block';
         }
 
-        function addToCart(id) {
+        function addToCartFromPopup(id) {
             const item = items.find(i => i.id === id);
-            if(item && item.stock) {
-                cart.push(item);
-                updateCartUI();
+            if(!item) return;
+
+            const parsed = parseVariants(item.description);
+            let chosenOptions = [];
+            if (parsed) {
+                for (const optionName of Object.keys(parsed.options)) {
+                    const selectEl = document.getElementById(`popup-select-${optionName}-${item.id}`);
+                    if (selectEl) chosenOptions.push(`${optionName}: ${selectEl.value}`);
+                }
             }
+
+            const cartItem = JSON.parse(JSON.stringify(item));
+            cartItem.chosenDetails = chosenOptions.join(', ');
+            cartItem.cartImg = document.getElementById('popup-img').src;
+
+            cart.push(cartItem);
+            updateCartUI();
+            closeModal('productModal');
         }
 
         function updateCartUI() {
@@ -362,11 +521,12 @@
             list.innerHTML = ''; let total = 0;
             cart.forEach((item, index) => {
                 total += parseFloat(item.price);
+                const variantText = item.chosenDetails ? `<br><span style="font-size:0.8rem; color:var(--primary); font-weight:600;">➔ ${item.chosenDetails}</span>` : '';
                 list.innerHTML += `
                     <div class="cart-item">
-                        <div>
-                            <strong>${item.name}</strong>
-                            <div style="font-size:0.85rem;color:#666">${parseFloat(item.price).toFixed(2)} €</div>
+                        <div style="display:flex; align-items:center; gap: 10px;">
+                            <img src="${item.cartImg || item.img}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
+                            <div><strong>${item.name}</strong>${variantText}<div style="font-size:0.85rem;color:#666">${parseFloat(item.price).toFixed(2)} €</div></div>
                         </div>
                         <button class="btn btn-danger" onclick="removeFromCart(${index})">X</button>
                     </div>`;
@@ -376,16 +536,36 @@
 
         function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
 
-        function checkoutInstagram() {
+        // ENVOI DE COMMANDE EN DIRECT SUR L'APPLI CONFIGURÉE DE L'ADMIN
+        function checkoutOrder() {
             if(cart.length === 0) { alert("Votre panier est vide !"); return; }
-            let message = "Bonjour ! Je souhaite vous acheter ces articles neufs vus sur votre e-shop :\n\n";
-            cart.forEach(item => { message += `- 1x ${item.name} (${parseFloat(item.price).toFixed(2)}€)\n`; });
-            message += `\n💰 Montant Total : ${document.getElementById('cart-total').innerText} €\n`;
-            message += `Dispo pour fixer le rendez-vous ou l'envoi postal !`;
+            let message = "Bonjour ! Je souhaite commander ces articles neufs vus sur votre boutique :\n\n";
+            cart.forEach(item => { 
+                const optText = item.chosenDetails ? ` [${item.chosenDetails}]` : '';
+                message += `- 1x ${item.name}${optText} (${parseFloat(item.price).toFixed(2)}€)\n`; 
+            });
+            message += `\n💰 Montant Total : ${document.getElementById('cart-total').innerText} €\n\n`;
+            message += `Dispo pour la livraison ou la remise en main propre !`;
             
             navigator.clipboard.writeText(message).then(() => {
-                alert("🛒 Commande copiée dans ton presse-papiers ! Colles-la directement dans la discussion Instagram.");
-                window.open("https://www.instagram.com/yusef_rh93/", "_blank");
+                alert("🛒 Ta commande est copiée ! On t'ouvre l'application pour coller le message.");
+                
+                const platform = settings.social_platform || 'instagram';
+                let targetUrl = settings.social_link || "https://instagram.com/yusef_rh93/";
+                
+                if(platform === 'whatsapp' && settings.social_link) {
+                    // Nettoyer le numéro pour WhatsApp
+                    let num = settings.social_link.replace(/[^0-9]/g, '');
+                    targetUrl = `https://wa.me/${num}?text=${encodeURIComponent(message)}`;
+                }
+                window.open(targetUrl, "_blank");
+            });
+        }
+
+        function renderReviewsUI() {
+            const container = document.getElementById('reviews-container'); container.innerHTML = '';
+            reviews.forEach(rev => {
+                container.innerHTML += `<div class="review-card"><strong>${rev.name}</strong> <span>${"⭐".repeat(rev.stars)}</span><p style="font-size:0.85rem; margin-top:4px;">${rev.comment}</p></div>`;
             });
         }
 
@@ -393,11 +573,9 @@
             const name = document.getElementById('rev-name').value.trim();
             const stars = parseInt(document.getElementById('rev-stars').value);
             const comment = document.getElementById('rev-comment').value.trim();
-
             if(!name || !comment) { alert("Veuillez remplir les champs !"); return; }
             await _supabase.from('reviews').insert([{ name, stars, comment }]);
-            document.getElementById('rev-name').value = '';
-            document.getElementById('rev-comment').value = '';
+            document.getElementById('rev-name').value = ''; document.getElementById('rev-comment').value = '';
             alert("Avis publié !");
         }
 
@@ -410,15 +588,40 @@
                     document.getElementById('adminModal').style.display = 'block';
                     document.getElementById('edit-title').value = settings.siteTitle || "";
                     document.getElementById('edit-info').value = settings.bannerText || "";
-                    document.getElementById('edit-bg-color').value = settings.bg_color || "#F9FAFB";
-                    document.getElementById('edit-font').value = settings.font_family || "'Segoe UI', sans-serif";
-                    document.getElementById('edit-animations').value = settings.enable_animations || "true";
                     document.getElementById('edit-header-img').value = settings.header_img || "";
+                    
+                    document.getElementById('edit-bg-type').value = settings.bg_type || "color";
+                    document.getElementById('edit-bg-color').value = settings.bg_color || "#F9FAFB";
+                    document.getElementById('edit-bg-image-url').value = settings.bg_image_url || "";
+                    
+                    document.getElementById('edit-social-platform').value = settings.social_platform || "instagram";
+                    document.getElementById('edit-social-link').value = settings.social_link || "";
+                    
+                    toggleBgInputs();
+                    updateSocialLabelPlaceholder();
                     renderAdminTable();
                     renderAdminReviewsTable();
                 } else { alert("Code incorrect !"); }
             }
             setTimeout(() => { adminClickCount = 0; }, 3000);
+        }
+
+        function toggleBgInputs() {
+            const type = document.getElementById('edit-bg-type').value;
+            document.getElementById('bg-color-zone').style.display = type === 'color' ? 'block' : 'none';
+            document.getElementById('bg-image-zone').style.display = type === 'image' ? 'block' : 'none';
+        }
+
+        function updateSocialLabelPlaceholder() {
+            const platform = document.getElementById('edit-social-platform').value;
+            const linkInput = document.getElementById('edit-social-link');
+            if(platform === 'whatsapp') {
+                linkInput.placeholder = "Exemple : +33612345678";
+            } else if(platform === 'snapchat') {
+                linkInput.placeholder = "Lien add snap : https://snapchat.com/add/ton_nom";
+            } else {
+                linkInput.placeholder = "Lien profil complet (https://...)";
+            }
         }
 
         function renderAdminTable() {
@@ -443,12 +646,7 @@
         function renderAdminReviewsTable() {
             const tbody = document.getElementById('admin-reviews-table-body'); tbody.innerHTML = '';
             reviews.forEach((rev) => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td><strong>${rev.name}</strong><br>${"⭐".repeat(rev.stars)}</td>
-                        <td><small>${rev.comment}</small></td>
-                        <td><button class="btn btn-danger" onclick="deleteReview(${rev.id})">Supprimer</button></td>
-                    </tr>`;
+                tbody.innerHTML += `<tr><td><strong>${rev.name}</strong><br>${"⭐".repeat(rev.stars)}</td><td><small>${rev.comment}</small></td><td><button class="btn btn-danger" onclick="deleteReview(${rev.id})">Suppr</button></td></tr>`;
             });
         }
 
@@ -458,17 +656,11 @@
         }
 
         async function deleteProduct(id) {
-            if(confirm("Supprimer cet objet du catalogue ?")) {
-                await _supabase.from('items').delete().eq('id', id);
-                refreshMenu(); renderAdminTable();
-            }
+            if(confirm("Supprimer cet objet ?")) { await _supabase.from('items').delete().eq('id', id); refreshMenu(); renderAdminTable(); }
         }
 
         async function deleteReview(id) {
-            if(confirm("Supprimer cet avis ?")) {
-                await _supabase.from('reviews').delete().eq('id', id);
-                refreshReviews(); renderAdminReviewsTable();
-            }
+            if(confirm("Supprimer cet avis ?")) { await _supabase.from('reviews').delete().eq('id', id); refreshReviews(); renderAdminReviewsTable(); }
         }
 
         async function addNewProduct() {
@@ -477,33 +669,30 @@
             const description = document.getElementById('new-desc').value.trim(); 
             const price = parseFloat(document.getElementById('new-price').value);
             const img = document.getElementById('new-img').value.trim();
-
-            if(!name || !type || !price) { alert('Veuillez remplir au moins le rayon, le nom du produit et son prix.'); return; }
-
+            if(!name || !type || !price) { alert('Champs obligatoires manquants.'); return; }
             await _supabase.from('items').insert([{ type, name, description, price, img, stock: true }]);
-            closeModal('adminModal');
-            alert('Article ajouté en direct sur ta base de données !');
+            closeModal('adminModal'); alert('Article ajouté avec succès !');
         }
 
         async function saveGeneralSettings() {
             const updates = [
                 { key: 'siteTitle', value: document.getElementById('edit-title').value },
                 { key: 'bannerText', value: document.getElementById('edit-info').value },
+                { key: 'header_img', value: document.getElementById('edit-header-img').value },
+                { key: 'bg_type', value: document.getElementById('edit-bg-type').value },
                 { key: 'bg_color', value: document.getElementById('edit-bg-color').value },
-                { key: 'font_family', value: document.getElementById('edit-font').value },
-                { key: 'enable_animations', value: document.getElementById('edit-animations').value },
-                { key: 'header_img', value: document.getElementById('edit-header-img').value }
+                { key: 'bg_image_url', value: document.getElementById('edit-bg-image-url').value },
+                { key: 'social_platform', value: document.getElementById('edit-social-platform').value },
+                { key: 'social_link', value: document.getElementById('edit-social-link').value }
             ];
             for(let setting of updates) { await _supabase.from('settings').upsert(setting); }
-            closeModal('adminModal');
-            alert("Configuration et design mis à jour en temps réel !");
+            closeModal('adminModal'); alert("Look global & boutons mis à jour !");
         }
 
         function switchTab(tabId) {
             document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active'); event.target.classList.add('active');
         }
 
         function changeLanguage(lang) {
