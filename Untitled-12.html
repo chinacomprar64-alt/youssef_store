@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon E-Shop - Produits Neufs</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --primary: #2563EB; /* Bleu e-commerce moderne */
+            --secondary: #10B981; /* Vert dispo / succès */
+            --accent: #F59E0B;
+            --bg: #F9FAFB; 
+            --dark: #1F2937;
+            --font: 'Segoe UI', Arial, sans-serif; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font); }
+        body { background-color: var(--bg); color: var(--dark); line-height: 1.6; padding-bottom: 90px; transition: background-color 0.5s ease; }
+        
+        .top-bar { background: #1F2937; color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; flex-wrap: wrap; gap: 10px; }
+        .lang-selector select { background: #374151; color: white; border: 1px solid #4B5563; padding: 5px; border-radius: 4px; }
+
+        header { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80') center/cover; color: white; text-align: center; padding: 50px 15px; position: relative; }
+        header h1 { font-size: 2.2rem; font-weight: 800; text-shadow: 2px 2px 4px rgba(0,0,0,0.4); text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Zone secrète pour le gérant en haut à droite du header */
+        .secret-dot { position: absolute; top: 10px; right: 10px; width: 15px; height: 15px; background: rgba(255,255,255,0.2); border-radius: 50%; cursor: pointer; }
+        
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+        
+        .category-sections { margin-bottom: 40px; }
+        .category-title { font-size: 1.4rem; color: var(--dark); font-weight: 700; margin: 30px 0 15px 0; padding-left: 10px; border-left: 4px solid var(--primary); text-transform: capitalize; }
+        
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+        
+        .animated-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .animated-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.03); position: relative; display: flex; flex-direction: column; border: 1px solid #E5E7EB; }
+        .card img { width: 100%; height: 220px; object-fit: cover; background: #f3f4f6; }
+        .card-body { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-body h3 { font-size: 1.1rem; font-weight: 600; color: #111827; }
+        .card-price { font-size: 1.3rem; color: var(--primary); font-weight: 700; margin: 8px 0; }
+        
+        .stock-tag { position: absolute; top: 10px; right: 10px; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; color: white; z-index: 10; letter-spacing: 0.5px; }
+        .in-stock { background: var(--secondary); }
+        .out-of-stock { background: #EF4444; }
+
+        .footer-info-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 50px; background: white; padding: 25px; border-radius: 12px; border: 1px solid #E5E7EB; }
+        @media(min-width: 768px) { .footer-info-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .reviews-box { max-height: 250px; overflow-y: auto; margin-bottom: 15px; }
+        .review-card { background: #F9FAFB; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--accent); }
+
+        .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 14px 24px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 10px 25px rgba(37,99,235,0.3); z-index: 99; display: flex; align-items: center; gap: 10px; font-size: 1rem; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; overflow-y: auto; padding: 10px; }
+        .modal-content { background: white; max-width: 550px; margin: 30px auto; padding: 25px; border-radius: 16px; position: relative; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .close-btn { position: absolute; top: 12px; right: 18px; font-size: 1.8rem; cursor: pointer; color: #9CA3AF; }
+
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #F3F4F6; }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; text-align: center; display: block; text-decoration: none; font-size: 1rem; transition: background 0.2s; }
+        .btn:hover { filter: brightness(0.95); }
+        .btn:disabled { background: #9CA3AF !important; cursor: not-allowed; }
+        .btn-danger { background: #EF4444; padding: 6px 10px; font-size: 0.75rem; width: auto; border-radius: 6px; }
+
+        input, select, textarea { width: 100%; padding: 11px; margin: 8px 0; border: 1px solid #D1D5DB; border-radius: 8px; font-size: 0.95rem; background: #FBFBFB; }
+        input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary); background: #fff; }
+
+        .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid #E5E7EB; padding-bottom: 10px; overflow-x: auto; }
+        .tab-btn { background: #F3F4F6; border: none; padding: 10px 16px; cursor: pointer; border-radius: 6px; font-size: 0.85rem; font-weight: 600; color: #4B5563; flex-shrink: 0; }
+        .tab-btn.active { background: var(--dark); color: white; }
+        .admin-tab-content { display: none; }
+        .admin-tab-content.active { display: block; }
+        
+        .table-wrapper { width: 100%; overflow-x: auto; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .admin-table th, .admin-table td { border: 1px solid #E5E7EB; padding: 10px; text-align: left; font-size: 0.85rem; }
+        .admin-table th { background: #F9FAFB; color: #374151; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div id="banner-info">Connexion e-shop en direct...</div>
+        <div class="lang-selector">
+            🌐 <select id="langSelect" onchange="changeLanguage(this.value)">
+                <option value="fr">Français 🇫🇷</option>
+                <option value="en">English 🇬🇧</option>
+            </select>
+        </div>
+    </div>
+
+    <header id="site-header">
+        <h1 id="site-title">Mon E-Shop</h1>
+        <p id="site-subtitle" style="font-size: 1.1rem; font-weight: 300; margin-top: 5px;">Produits neufs au meilleur prix</p>
+        <div class="secret-dot" onclick="secretAdminClick()"></div>
+    </header>
+
+    <div class="container">
+        <div id="shop-categories-container" class="category-sections"></div>
+
+        <div class="footer-info-grid">
+            <div>
+                <h3 style="margin-bottom:15px; color:var(--primary)">📦 Informations de livraison</h3>
+                <p style="font-size: 0.95rem; color:#4B5563;">
+                    Tous nos articles sont certifiés <strong>neufs sous emballage</strong>.<br><br>
+                    🚗 <strong>Remise en main propre :</strong> Possible selon disponibilité.<br>
+                    📦 <strong>Envoi postal / Livraison :</strong> Contactez-nous pour fixer les détails.
+                </p>
+            </div>
+
+            <div>
+                <h3 style="margin-bottom:15px; color:var(--primary)" id="title-reviews">💬 Avis de nos acheteurs</h3>
+                <div class="reviews-box" id="reviews-container"></div>
+                
+                <div style="background:#F3F4F6; padding:15px; border-radius:8px;">
+                    <h4 style="font-size:0.9rem; margin-bottom:5px;">Laissez une note d'achat :</h4>
+                    <input type="text" id="rev-name" placeholder="Votre nom">
+                    <select id="rev-stars">
+                        <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                        <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                        <option value="3">⭐⭐⭐ (3/5)</option>
+                    </select>
+                    <textarea id="rev-comment" placeholder="Qualité de l'article, communication..." rows="2"></textarea>
+                    <button class="btn" style="padding:8px; margin-top:5px; font-size:0.9rem;" onclick="submitReview()">Publier mon avis</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-float" onclick="openCartModal()">
+        🛒 <span id="cart-text">Mon Panier</span> (<span id="cart-count">0</span>)
+    </div>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('cartModal')">×</span>
+            <h3 id="title-your-cart">Votre Panier</h3>
+            <div id="cart-items-list" style="margin: 20px 0; max-height: 250px; overflow-y: auto;"></div>
+            <h3 style="margin-bottom: 20px;">Total: <span id="cart-total">0.00</span> €</h3>
+            <button class="btn" onclick="checkoutInstagram()" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);">
+                📸 Commander via Instagram
+            </button>
+        </div>
+    </div>
+
+    <div class="modal" id="adminModal">
+        <div class="modal-content" style="max-width: 95%;">
+            <span class="close-btn" onclick="closeModal('adminModal')">×</span>
+            <h3>⚙️ Console Gérant Cloud E-Commerce</h3>
+            
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="switchTab('tab-items')">Articles & Stocks</button>
+                <button class="tab-btn" onclick="switchTab('tab-add')">+ Mettre en Vente</button>
+                <button class="tab-btn" onclick="switchTab('tab-reviews')">Avis Acheteurs</button>
+                <button class="tab-btn" onclick="switchTab('tab-settings')">Look & Textes</button>
+            </div>
+
+            <div id="tab-items" class="admin-tab-content active">
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead><tr><th>Article</th><th>Rayon / Catégorie</th><th>Prix (€)</th><th>Dispo</th><th>Action</th></tr></thead>
+                        <tbody id="admin-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-add" class="admin-tab-content">
+                <h4>Ajouter un nouvel article neuf</h4>
+                <input type="text" id="new-type" placeholder="Catégorie (Ex: Tech, Sneakers, Mode, Accessoires)">
+                <input type="text" id="new-name" placeholder="Nom du produit">
+                <input type="text" id="new-desc" placeholder="Détails (Taille, Couleur, État)">
+                <input type="number" step="0.01" id="new-price" placeholder="Prix (Ex: 49.99)">
+                <input type="text" id="new-img" placeholder="Lien URL de la photo de l'objet">
+                <button class="btn" style="margin-top:10px;" onclick="addNewProduct()">Enregistrer et publier</button>
+            </div>
+
+            <div id="tab-reviews" class="admin-tab-content">
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead><tr><th>Acheteur</th><th>Avis</th><th>Action</th></tr></thead>
+                        <tbody id="admin-reviews-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-settings" class="admin-tab-content">
+                <h4>Nom commercial du shop</h4><input type="text" id="edit-title">
+                <h4>Bandeau de notification (Haut)</h4><input type="text" id="edit-info">
+                <h4>Lien Image Header (Couverture)</h4><input type="text" id="edit-header-img">
+                
+                <h4>Couleur de fond du site</h4>
+                <input type="color" id="edit-bg-color" style="height:40px; padding:0;">
+                
+                <h4>Police de caractères</h4>
+                <select id="edit-font">
+                    <option value="'Segoe UI', sans-serif">Moderne (Segoe UI)</option>
+                    <option value="'Georgia', serif">Luxe / Rétro (Georgia)</option>
+                </select>
+
+                <h4>Animations fluides</h4>
+                <select id="edit-animations">
+                    <option value="true">Activer les animations au survol</option>
+                    <option value="false">Désactiver</option>
+                </select>
+
+                <button class="btn" style="margin-top:15px; background:var(--primary);" onclick="saveGeneralSettings()">Mettre à jour le design global</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tes nouveaux identifiants Supabase actifs
+        const SUBAPASE_URL = "https://cmfksgpzqxmeiolybtaz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_inCQG7-gvY-5clyg1bJkAw_8-h_kLND";
+        const _supabase = supabase.createClient(SUBAPASE_URL, SUPABASE_KEY);
+
+        const translations = {
+            fr: { cart: "Mon Panier", yourCart: "Votre Panier" },
+            en: { cart: "My Cart", yourCart: "Your Cart" }
+        };
+
+        let items = [];
+        let reviews = [];
+        let settings = {};
+        let cart = [];
+        let adminClickCount = 0;
+        let currentLang = "fr";
+
+        async function initApp() {
+            await fetchAllData();
+            renderSite();
+            listenToRealtimeChanges();
+        }
+
+        async function fetchAllData() {
+            let { data: itemsData } = await _supabase.from('items').select('*').order('id', { ascending: true });
+            let { data: reviewsData } = await _supabase.from('reviews').select('*').order('id', { ascending: false });
+            let { data: settingsData } = await _supabase.from('settings').select('*');
+
+            items = itemsData || [];
+            reviews = reviewsData || [];
+            if (settingsData) {
+                settingsData.forEach(row => { settings[row.key] = row.value; });
+            }
+        }
+
+        function listenToRealtimeChanges() {
+            _supabase.channel('public-ecommerce-live')
+                .on('postgres_changes', { event: '*', filter: 'table=eq.items' }, () => { refreshMenu(); })
+                .on('postgres_changes', { event: '*', filter: 'table=eq.reviews' }, () => { refreshReviews(); })
+                .on('postgres_changes', { event: '*', filter: 'table=eq.settings' }, async () => {
+                    let { data } = await _supabase.from('settings').select('*');
+                    data.forEach(row => { settings[row.key] = row.value; });
+                    applyGraphicSettings();
+                })
+                .subscribe();
+        }
+
+        async function refreshMenu() {
+            let { data } = await _supabase.from('items').select('*').order('id', { ascending: true });
+            items = data || [];
+            renderShopUI();
+        }
+
+        async function refreshReviews() {
+            let { data } = await _supabase.from('reviews').select('*').order('id', { ascending: false });
+            reviews = data || [];
+            renderReviewsUI();
+        }
+
+        function renderSite() {
+            applyGraphicSettings();
+            renderShopUI();
+            renderReviewsUI();
+        }
+
+        function applyGraphicSettings() {
+            document.getElementById('site-title').innerText = settings.siteTitle || "Mon E-Shop";
+            document.getElementById('banner-info').innerText = settings.bannerText || "⚡ Articles neufs en stock";
+            
+            if(settings.bg_color) document.documentElement.style.setProperty('--bg', settings.bg_color);
+            if(settings.font_family) document.documentElement.style.setProperty('--font', settings.font_family);
+            if(settings.header_img) {
+                document.getElementById('site-header').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${settings.header_img}')`;
+            }
+        }
+
+        function renderShopUI() {
+            const container = document.getElementById('shop-categories-container');
+            container.innerHTML = '';
+
+            if (items.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:gray; padding:20px;">Aucun article en vente pour le moment.</p>`;
+                return;
+            }
+
+            const categories = {};
+            items.forEach(item => {
+                const catName = item.type || 'Général';
+                if (!categories[catName]) categories[catName] = [];
+                categories[catName].push(item);
+            });
+
+            const isAnimated = settings.enable_animations !== 'false';
+
+            for (const [catName, prodList] of Object.entries(categories)) {
+                let catHtml = `
+                    <div class="category-block">
+                        <div class="category-title">${catName}</div>
+                        <div class="menu-grid">
+                `;
+
+                prodList.forEach(item => {
+                    catHtml += `
+                        <div class="card ${isAnimated ? 'animated-card' : ''}">
+                            <span class="stock-tag ${item.stock ? 'in-stock' : 'out-of-stock'}">${item.stock ? 'NEUF' : 'VENDU'}</span>
+                            <img src="${item.img || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30'}" alt="${item.name}">
+                            <div class="card-body">
+                                <h3>${item.name}</h3>
+                                <p style="color:gray; font-size:0.85rem; margin: 5px 0; flex-grow:1;">${item.description || item.desc || ''}</p>
+                                <div class="card-price">${parseFloat(item.price).toFixed(2)} €</div>
+                                <button class="btn" onclick="addToCart(${item.id})" ${!item.stock ? 'disabled style="background:gray"' : ''}>
+                                    ${item.stock ? 'Ajouter au panier' : 'Indisponible'}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                catHtml += `</div></div>`;
+                container.innerHTML += catHtml;
+            }
+        }
+
+        function renderReviewsUI() {
+            const container = document.getElementById('reviews-container');
+            container.innerHTML = '';
+            reviews.forEach(rev => {
+                container.innerHTML += `
+                    <div class="review-card">
+                        <strong>${rev.name}</strong> <span>${"⭐".repeat(rev.stars)}</span>
+                        <p style="font-size:0.85rem; margin-top:4px;">${rev.comment}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function addToCart(id) {
+            const item = items.find(i => i.id === id);
+            if(item && item.stock) {
+                cart.push(item);
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const list = document.getElementById('cart-items-list');
+            list.innerHTML = ''; let total = 0;
+            cart.forEach((item, index) => {
+                total += parseFloat(item.price);
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.name}</strong>
+                            <div style="font-size:0.85rem;color:#666">${parseFloat(item.price).toFixed(2)} €</div>
+                        </div>
+                        <button class="btn btn-danger" onclick="removeFromCart(${index})">X</button>
+                    </div>`;
+            });
+            document.getElementById('cart-total').innerText = total.toFixed(2);
+        }
+
+        function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
+
+        function checkoutInstagram() {
+            if(cart.length === 0) { alert("Votre panier est vide !"); return; }
+            let message = "Bonjour ! Je souhaite vous acheter ces articles neufs vus sur votre e-shop :\n\n";
+            cart.forEach(item => { message += `- 1x ${item.name} (${parseFloat(item.price).toFixed(2)}€)\n`; });
+            message += `\n💰 Montant Total : ${document.getElementById('cart-total').innerText} €\n`;
+            message += `Dispo pour fixer le rendez-vous ou l'envoi postal !`;
+            
+            navigator.clipboard.writeText(message).then(() => {
+                alert("🛒 Commande copiée dans ton presse-papiers ! Colles-la directement dans la discussion Instagram.");
+                window.open("https://www.instagram.com/yusef_rh93/", "_blank");
+            });
+        }
+
+        async function submitReview() {
+            const name = document.getElementById('rev-name').value.trim();
+            const stars = parseInt(document.getElementById('rev-stars').value);
+            const comment = document.getElementById('rev-comment').value.trim();
+
+            if(!name || !comment) { alert("Veuillez remplir les champs !"); return; }
+            await _supabase.from('reviews').insert([{ name, stars, comment }]);
+            document.getElementById('rev-name').value = '';
+            document.getElementById('rev-comment').value = '';
+            alert("Avis publié !");
+        }
+
+        function secretAdminClick() {
+            adminClickCount++;
+            if(adminClickCount >= 3) {
+                adminClickCount = 0;
+                const code = prompt("Code secret administrateur gérant :");
+                if(code === "3322") {
+                    document.getElementById('adminModal').style.display = 'block';
+                    document.getElementById('edit-title').value = settings.siteTitle || "";
+                    document.getElementById('edit-info').value = settings.bannerText || "";
+                    document.getElementById('edit-bg-color').value = settings.bg_color || "#F9FAFB";
+                    document.getElementById('edit-font').value = settings.font_family || "'Segoe UI', sans-serif";
+                    document.getElementById('edit-animations').value = settings.enable_animations || "true";
+                    document.getElementById('edit-header-img').value = settings.header_img || "";
+                    renderAdminTable();
+                    renderAdminReviewsTable();
+                } else { alert("Code incorrect !"); }
+            }
+            setTimeout(() => { adminClickCount = 0; }, 3000);
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('admin-table-body'); tbody.innerHTML = '';
+            items.forEach((item) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${item.name}</strong></td>
+                        <td><input type="text" value="${item.type || ''}" style="width:80px; padding:4px;" onchange="updateItemField(${item.id}, 'type', this.value)"></td>
+                        <td><input type="number" step="0.1" value="${item.price}" style="width:65px; padding:4px;" onchange="updateItemField(${item.id}, 'price', this.value)"></td>
+                        <td>
+                            <select onchange="updateItemField(${item.id}, 'stock', this.value === 'true')" style="width:90px; padding:4px;">
+                                <option value="true" ${item.stock ? 'selected' : ''}>En stock</option>
+                                <option value="false" ${!item.stock ? 'selected' : ''}>Vendu</option>
+                            </select>
+                        </td>
+                        <td><button class="btn btn-danger" onclick="deleteProduct(${item.id})">Suppr</button></td>
+                    </tr>`;
+            });
+        }
+
+        function renderAdminReviewsTable() {
+            const tbody = document.getElementById('admin-reviews-table-body'); tbody.innerHTML = '';
+            reviews.forEach((rev) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${rev.name}</strong><br>${"⭐".repeat(rev.stars)}</td>
+                        <td><small>${rev.comment}</small></td>
+                        <td><button class="btn btn-danger" onclick="deleteReview(${rev.id})">Supprimer</button></td>
+                    </tr>`;
+            });
+        }
+
+        async function updateItemField(id, field, value) {
+            let cleanValue = field === 'price' ? parseFloat(value) : value;
+            await _supabase.from('items').update({ [field]: cleanValue }).eq('id', id);
+        }
+
+        async function deleteProduct(id) {
+            if(confirm("Supprimer cet objet du catalogue ?")) {
+                await _supabase.from('items').delete().eq('id', id);
+                refreshMenu(); renderAdminTable();
+            }
+        }
+
+        async function deleteReview(id) {
+            if(confirm("Supprimer cet avis ?")) {
+                await _supabase.from('reviews').delete().eq('id', id);
+                refreshReviews(); renderAdminReviewsTable();
+            }
+        }
+
+        async function addNewProduct() {
+            const type = document.getElementById('new-type').value.trim(); 
+            const name = document.getElementById('new-name').value.trim();
+            const description = document.getElementById('new-desc').value.trim(); 
+            const price = parseFloat(document.getElementById('new-price').value);
+            const img = document.getElementById('new-img').value.trim();
+
+            if(!name || !type || !price) { alert('Veuillez remplir au moins le rayon, le nom du produit et son prix.'); return; }
+
+            await _supabase.from('items').insert([{ type, name, description, price, img, stock: true }]);
+            closeModal('adminModal');
+            alert('Article ajouté en direct sur ta base de données !');
+        }
+
+        async function saveGeneralSettings() {
+            const updates = [
+                { key: 'siteTitle', value: document.getElementById('edit-title').value },
+                { key: 'bannerText', value: document.getElementById('edit-info').value },
+                { key: 'bg_color', value: document.getElementById('edit-bg-color').value },
+                { key: 'font_family', value: document.getElementById('edit-font').value },
+                { key: 'enable_animations', value: document.getElementById('edit-animations').value },
+                { key: 'header_img', value: document.getElementById('edit-header-img').value }
+            ];
+            for(let setting of updates) { await _supabase.from('settings').upsert(setting); }
+            closeModal('adminModal');
+            alert("Configuration et design mis à jour en temps réel !");
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('cart-text').innerText = translations[lang].cart;
+            document.getElementById('title-your-cart').innerText = translations[lang].yourCart;
+        }
+
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+        function openCartModal() { document.getElementById('cartModal').style.display = 'block'; }
+
+        initApp();
+    </script>
+</body>
+</html>
