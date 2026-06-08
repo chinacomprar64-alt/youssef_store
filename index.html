@@ -6,7 +6,7 @@
     <title>Mon E-Shop - Mode & Tech</title>
     <style>
         :root {
-            --primary: #2563EB; /* Bleu moderne pour la tech/mode */
+            --primary: #2563EB; /* Bleu moderne */
             --secondary: #10B981;
             --accent: #F59E0B;
             --bg: #F9FAFB;
@@ -66,7 +66,6 @@
         .modal-content { background: white; max-width: 520px; margin: 40px auto; padding: 25px; border-radius: 12px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #aaa; z-index: 10; }
 
-        /* Pop-up Fiche produit */
         .product-popup-img { width: 100%; max-height: 320px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background: #f3f4f6; }
         .product-popup-desc { color: #4B5563; font-size: 0.95rem; margin: 15px 0; background: #F9FAFB; padding: 12px; border-radius: 6px; border-left: 3px solid #D1D5DB; }
 
@@ -168,8 +167,7 @@
                 
                 <div style="background: #eff6ff; padding: 10px; border-radius: 6px; font-size: 0.75rem; color:#1e40af; margin: 5px 0; border: 1px solid #bfdbfe;">
                     <strong>💡 Astuce multi-images & options (Couleurs / Tailles) :</strong><br>
-                    Écris ta description puis sépare tes choix avec la barre <code>|</code>.<br>
-                    Exemple : <code>Survêtement lourd de saison | Couleur:Noir=lien_photo_noire,Bleu=lien_photo_bleue | Taille:S,M,XL</code>
+                    Exemple : <code>Sweat lourd de saison | Couleur:Noir=lien_photo_noire,Bleu=lien_photo_bleue | Taille:S,M,XL</code>
                 </div>
                 <input type="text" id="new-desc" placeholder="Description simple ou avec options |">
                 
@@ -190,7 +188,7 @@
                     <option value="image">Une Image / Photo de fond complète</option>
                 </select>
                 <div id="bg-color-zone"><input type="color" id="edit-bg-color" style="height:40px; padding:0;"></div>
-                <div id="bg-image-zone" style="display:none;"><input type="text" id="edit-bg-image-url" placeholder="Colle l'adresse URL de ton image de fond d'écran"></div>
+                <div id="bg-image-zone" style="display:none;"><input type="text" id="edit-bg-image-url" placeholder="Colle l'adresse URL de ton image de fond"></div>
 
                 <h4 style="color:var(--primary); border-bottom:1px solid #ddd; margin:15px 0 5px 0;">Bouton de Commande Réseaux Sociaux</h4>
                 <h4>Application pour recevoir les paniers</h4>
@@ -201,7 +199,7 @@
                     <option value="tiktok">TikTok 🎵</option>
                 </select>
                 <h4>Lien vers ton profil ou numéro de téléphone</h4>
-                <input type="text" id="edit-social-link" placeholder="Lien profil (ex: https://instagram.com/nom)">
+                <input type="text" id="edit-social-link" placeholder="Lien complet (https://...)">
 
                 <button class="btn" style="margin-top:15px;" onclick="saveGeneralSettings()">Sauvegarder tous les changements</button>
             </div>
@@ -209,22 +207,22 @@
     </div>
 
     <script>
-        // Initialisation ou récupération du stock local
-        let items = JSON.parse(localStorage.getItem('eshop_items')) || [
+        // CLEFS DE STOCKAGE CHASSÉES DE TOUTE TRACE DE PIZZA
+        let items = JSON.parse(localStorage.getItem('eshop_items_v2')) || [
             { id: 1, type: "Sneakers", name: "Air Max Classic", desc: "Édition limitée neuve | Couleur:Blanc=https://images.unsplash.com/photo-1542291026-7eec264c27ff,Noir=https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a | Taille:41,42,43", price: 120.00, stock: true, img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff" },
             { id: 2, type: "Vestes", name: "Coupe-vent Tech", desc: "Matière imperméable ultra confort", price: 75.00, stock: true, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5" }
         ];
         
-        let siteTitle = localStorage.getItem('eshop_title') || "Mon E-Shop";
-        let bannerText = localStorage.getItem('eshop_banner') || "🔥 Nouvelle collection disponible !";
-        let headerImg = localStorage.getItem('eshop_header_img') || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80";
+        let siteTitle = localStorage.getItem('eshop_title_v2') || "Mon E-Shop";
+        let bannerText = localStorage.getItem('eshop_banner_v2') || "🔥 Nouvelle collection disponible !";
+        let headerImg = localStorage.getItem('eshop_header_img_v2') || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80";
         
-        let bgType = localStorage.getItem('eshop_bg_type') || "color";
-        let bgColor = localStorage.getItem('eshop_bg_color') || "#F9FAFB";
-        let bgImageUrl = localStorage.getItem('eshop_bg_image_url') || "";
+        let bgType = localStorage.getItem('eshop_bg_type_v2') || "color";
+        let bgColor = localStorage.getItem('eshop_bg_color_v2') || "#F9FAFB";
+        let bgImageUrl = localStorage.getItem('eshop_bg_image_url_v2') || "";
         
-        let socialPlatform = localStorage.getItem('eshop_social_platform') || "instagram";
-        let socialLink = localStorage.getItem('eshop_social_link') || "https://www.instagram.com/yusef_rh93/";
+        let socialPlatform = localStorage.getItem('eshop_social_platform_v2') || "instagram";
+        let socialLink = localStorage.getItem('eshop_social_link_v2') || "https://www.instagram.com/yusef_rh93/";
 
         let cart = [];
         let adminClickCount = 0;
@@ -244,7 +242,6 @@
             document.getElementById('banner-info').innerText = bannerText;
             document.getElementById('site-header').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${headerImg}')`;
             
-            // Appliquer le fond d'écran choisi
             if(bgType === 'image' && bgImageUrl) {
                 document.body.style.backgroundImage = `url('${bgImageUrl}')`;
                 document.body.style.backgroundColor = 'transparent';
@@ -253,7 +250,6 @@
                 document.body.style.backgroundColor = bgColor;
             }
 
-            // Mettre à jour le bouton panier pour l'appli choisie
             const checkoutBtn = document.getElementById('btn-checkout-social');
             if(socialPlatform === 'whatsapp') {
                 checkoutBtn.innerHTML = "💬 Commander via WhatsApp";
@@ -276,7 +272,6 @@
             renderShopUI();
         }
 
-        // Système d'analyse de description pour les images secondaires et options
         function parseVariants(descString) {
             if (!descString || !descString.includes(':')) return null;
             const result = { cleanDesc: "", options: {} };
@@ -356,7 +351,6 @@
             }
         }
 
-        // ACTION CLIC : OUVERTURE POPUP FICHE PRODUIT DÉTAILLÉE
         function openProductPopup(id) {
             const item = items.find(i => i.id === id);
             if(!item) return;
@@ -444,7 +438,6 @@
 
         function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
 
-        // REDIRECTION AUTOMATIQUE VERS LE RÉSEAU CONFIGURÉ
         function checkoutOrder() {
             if(cart.length === 0) { alert("Votre panier est vide !"); return; }
             let message = "Bonjour ! Je souhaite commander ces articles :\n\n";
@@ -466,7 +459,6 @@
             });
         }
 
-        // ACCÈS ADMIN PAR CLIC SECRET
         function secretAdminClick() {
             adminClickCount++;
             if(adminClickCount >= 3) {
@@ -528,14 +520,14 @@
 
         function updateStock(index, status) {
             items[index].stock = status;
-            localStorage.setItem('eshop_items', JSON.stringify(items));
+            localStorage.setItem('eshop_items_v2', JSON.stringify(items));
             renderSite();
         }
 
         function deleteProduct(index) {
             if(confirm("Supprimer cet article ?")) { 
                 items.splice(index, 1); 
-                localStorage.setItem('eshop_items', JSON.stringify(items)); 
+                localStorage.setItem('eshop_items_v2', JSON.stringify(items)); 
                 renderSite(); renderAdminTable(); 
             }
         }
@@ -549,7 +541,7 @@
             if(!name || !desc || !price) return;
             
             items.push({ id: Date.now(), type, name, desc, price, stock: true, img });
-            localStorage.setItem('eshop_items', JSON.stringify(items));
+            localStorage.setItem('eshop_items_v2', JSON.stringify(items));
             renderSite(); renderAdminTable(); closeModal('adminModal');
         }
 
@@ -563,14 +555,14 @@
             socialPlatform = document.getElementById('edit-social-platform').value;
             socialLink = document.getElementById('edit-social-link').value;
 
-            localStorage.setItem('eshop_title', siteTitle); 
-            localStorage.setItem('eshop_banner', bannerText);
-            localStorage.setItem('eshop_header_img', headerImg);
-            localStorage.setItem('eshop_bg_type', bgType);
-            localStorage.setItem('eshop_bg_color', bgColor);
-            localStorage.setItem('eshop_bg_image_url', bgImageUrl);
-            localStorage.setItem('eshop_social_platform', socialPlatform);
-            localStorage.setItem('eshop_social_link', socialLink);
+            localStorage.setItem('eshop_title_v2', siteTitle); 
+            localStorage.setItem('eshop_banner_v2', bannerText);
+            localStorage.setItem('eshop_header_img_v2', headerImg);
+            localStorage.setItem('eshop_bg_type_v2', bgType);
+            localStorage.setItem('eshop_bg_color_v2', bgColor);
+            localStorage.setItem('eshop_bg_image_url_v2', bgImageUrl);
+            localStorage.setItem('eshop_social_platform_v2', socialPlatform);
+            localStorage.setItem('eshop_social_link_v2', socialLink);
 
             renderSite(); closeModal('adminModal');
             alert("Boutons, look et fond d'écran configurés !");
